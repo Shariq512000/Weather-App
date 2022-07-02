@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        #navi {
+            background-color:black ;
+            height: 100px;
+        }
+        #first {
+            color: aqua; font-family: 'Courier New', Courier, monospace; font-size: 40px; padding: 30px;
+        }
+        img {
+            width: 100px;
+        }
+        .fom {margin: 25px; display: flex; justify-content: center;}
+        .fom > button {border-radius: 50px; padding: 15px; background-color: rgb(72, 72, 255); color: white; font-weight: bold; font-family: serif;}
+        #city {border-radius: 50px; padding: 15px;}
+        #cen { display: flex; justify-content: center; }
+        #temp {
+                font-size: 100px;
+                font-weight: bold;
+                color: rgb(80, 77, 77);
+                margin-left: 10px;
+            }
+        #par { display: flex; justify-content: center; margin-left: 320px; font-size: 30px; color: rgb(80, 77, 77); margin-top: 0px; }
+        #second { margin-left: 300px; font-size: 25px; margin-top: 100px;}
+        #foot {
+            background-color:black ;
+            height: 50px;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+    <nav id="navi">
+       <h1 id="first">Weather App</h1>
+    </nav>
+    <form onsubmit="getWeatherData(); return false" class="fom">
+    <input type="text" placeholder="Enter City Name" id="city">
+    <br>
+    <br>
+    </form>
+    <div id="cen">
+    <img src="" alt="" id="w_icon">
+    <div id="temp"></div>
+    </div>
+    <div id="par"></div>
+    <div id="second">
+    <div id="loca"></div>
+    <br>
+    <div id="fh"></div>
+    <br>
+    <div id="fl"></div>
+    <br>
+    <div id="hum"></div>
+    <br>
+    <div id="visi"></div>
+    <br>
+    <div id="ws"></div>
+    </div>
+    <footer id="foot"></footer>
+
+
+
+    <script>
+
+        function getWeatherData() {
+            // get city name
+            const city = document.getElementById("city").value;
+
+            axios.get('https://api.weatherapi.com/v1/current.json?key=bc95a555c96041ed99970949220107&q='+city)
+                .then(function (response) {
+                    // handle success
+                    const data = response.data;
+                    console.log(data);
+                    let icon = data.current.condition.icon;
+                    icon.replace("/file// ");
+                    document.querySelector("#w_icon").src = `https:${icon}`;
+                    let temp = data.current.temp_c;
+                    document.querySelector("#temp").innerText = `${temp}°C`
+                    let par = data.current.condition.text;
+                    document.querySelector("#par").innerText = `(${par})`
+                    let city = data.location.name;
+                    let region = data.location.region;
+                    let country = data.location.country;
+                    let loca = `Location:  ${city} , ${region} , ${country}`;
+                    document.querySelector("#loca").innerText = loca;
+                    let fh = data.current.temp_f;
+                    document.querySelector("#fh").innerText = `Fahrenheit:            ${fh} °F`;
+                    let fl = data.current.feelslike_c;
+                    document.querySelector("#fl").innerText = `Feelslike:            ${fl} °C`;
+                    let hum = data.current.humidity;
+                    document.querySelector("#hum").innerText = `Humidity:            ${hum}%`;
+                    let visi = data.current.vis_km;
+                    document.querySelector("#visi").innerText = `Visibility:            ${visi}km`;
+                    let ws = data.current.wind_kph;
+                    document.querySelector("#ws").innerText = `Wind Speed:            ${ws}kp/h`;
+
+
+
+
+
+
+
+                    
+
+                })
+                // document.getElementById('#curr').innerText = 
+
+        }
+        // getWeatherData();
+
+
+    </script>
+</body>
+</html>
